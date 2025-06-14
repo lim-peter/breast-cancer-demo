@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Breast Cancer Predictor Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="number"] {
+      padding: 8px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+      text-align: center;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0d47a1;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      background: #e8f5e9;
+      color: #2e7d32;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Breast Cancer Diagnosis Predictor (Demo)</h1>
+    <form id="predict-form">
+      <!-- Feature inputs will be injected here -->
+    </form>
+    <div class="full-width" id="prediction-result"></div>
+  </div>
+
+  <script>
+    const features = [
+      "radius_mean", "texture_mean", "perimeter_mean", "area_mean", "smoothness_mean",
+      "compactness_mean", "concavity_mean", "concave_points_mean", "symmetry_mean", "fractal_dimension_mean",
+      "radius_se", "texture_se", "perimeter_se", "area_se", "smoothness_se",
+      "compactness_se", "concavity_se", "concave_points_se", "symmetry_se", "fractal_dimension_se",
+      "radius_worst", "texture_worst", "perimeter_worst", "area_worst", "smoothness_worst",
+      "compactness_worst", "concavity_worst", "concave_points_worst", "symmetry_worst", "fractal_dimension_worst"
+    ];
+
+    const form = document.getElementById("predict-form");
+
+    // Add inputs
+    features.forEach(feature => {
+      const label = document.createElement("label");
+      label.innerText = feature;
+      const input = document.createElement("input");
+      input.type = "number";
+      input.name = feature;
+      input.step = "any";
+      input.value = (Math.random() * 10 + 1).toFixed(3); // Fill with random values for demo
+      form.appendChild(label);
+      form.appendChild(input);
+    });
+
+    // Add button
+    const btnDiv = document.createElement("div");
+    btnDiv.className = "full-width";
+    const btn = document.createElement("button");
+    btn.innerText = "Predict (Demo)";
+    btn.type = "submit";
+    btnDiv.appendChild(btn);
+    form.appendChild(btnDiv);
+
+    // Handle prediction
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const result = Math.random() > 0.5 ? "Benign" : "Malignant";
+      const resultColor = result === "Benign" ? "#2e7d32" : "#c62828";
+      const resultBg = result === "Benign" ? "#e8f5e9" : "#ffebee";
+      document.getElementById("prediction-result").innerHTML = `
+        <div class="result" style="background:${resultBg}; color:${resultColor};">
+          <strong>Prediction:</strong> ${result}
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>
