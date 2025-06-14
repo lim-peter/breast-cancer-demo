@@ -6,22 +6,38 @@
   <title>Breast Cancer Predictor Demo</title>
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
       background: #f4f6f8;
-      padding: 20px;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: row;
+      min-height: 100vh;
+    }
+
+    .left-image {
+      flex: 1;
+      background-color: black;
+    }
+
+    .left-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .right-form {
+      flex: 2;
+      background: white;
+      padding: 30px;
+      overflow-y: auto;
     }
 
     h1 {
       text-align: center;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      margin-top: 0;
     }
 
     form {
@@ -65,19 +81,40 @@
       margin-top: 20px;
       padding: 15px;
       border-radius: 5px;
-      background: #e8f5e9;
-      color: #2e7d32;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-weight: bold;
+    }
+
+    .result img {
+      width: 32px;
+      height: 32px;
+      margin-right: 10px;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: #777;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Breast Cancer Diagnosis Predictor (Demo)</h1>
-    <form id="predict-form">
-      <!-- Feature inputs will be injected here -->
-    </form>
-    <div class="full-width" id="prediction-result"></div>
+  <div class="main">
+    <div class="left-image">
+      <img src="healthy.jpg">
+    </div>
+
+    <div class="right-form">
+      <h1>Breast Cancer Diagnosis Predictor (Demo)</h1>
+      <form id="predict-form"></form>
+      <div class="full-width" id="prediction-result"></div>
+      <div class="footer">
+        <p>Demo only — No actual medical advice or diagnosis.</p>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -100,7 +137,7 @@
       input.type = "number";
       input.name = feature;
       input.step = "any";
-      input.value = (Math.random() * 10 + 1).toFixed(3); // Fill with random values for demo
+      input.value = (Math.random() * 10 + 1).toFixed(3); // Random values
       form.appendChild(label);
       form.appendChild(input);
     });
@@ -114,15 +151,22 @@
     btnDiv.appendChild(btn);
     form.appendChild(btnDiv);
 
-    // Handle prediction
+    const resultDiv = document.getElementById("prediction-result");
+
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const result = Math.random() > 0.5 ? "Benign" : "Malignant";
+      const icon = result === "Benign"
+        ? "https://cdn-icons-png.flaticon.com/512/845/845646.png"
+        : "https://cdn-icons-png.flaticon.com/512/1828/1828843.png";
+
       const resultColor = result === "Benign" ? "#2e7d32" : "#c62828";
       const resultBg = result === "Benign" ? "#e8f5e9" : "#ffebee";
-      document.getElementById("prediction-result").innerHTML = `
+
+      resultDiv.innerHTML = `
         <div class="result" style="background:${resultBg}; color:${resultColor};">
-          <strong>Prediction:</strong> ${result}
+          <img src="${icon}" alt="Result icon"/>
+          <span><strong>Prediction:</strong> ${result}</span>
         </div>
       `;
     });
